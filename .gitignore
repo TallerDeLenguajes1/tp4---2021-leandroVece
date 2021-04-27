@@ -1,0 +1,135 @@
+# Created by https://www.toptal.com/developers/gitignore/api/c,c++,cs-cart
+# Edit at https://www.toptal.com/developers/gitignore?templates=c,c++,cs-cart
+
+### C ###
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+### C++ ###
+# Prerequisites
+
+# Compiled Object files
+*.slo
+
+# Precompiled Headers
+
+# Linker files
+
+# Debugger Files
+
+# Compiled Dynamic libraries
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+
+# Executables
+
+### CS-Cart ###
+# CS-Cart and CS-Cart Multi-Vendor, a PHP-based CMS
+## Maintainer https://simtechdev.com
+
+js/core/node_modules
+js/tygh/core.js
+js/tygh/notifications_center.js
+js/tygh/bottom_panel.js
+js/core/npm-debug.log
+
+app/lib/composer.phar
+design/backend/css/twitterbootstrap.css
+images/*
+users/*
+var/*
+!var/database
+!var/backups/.htaccess
+!var/restore/.htaccess
+!var/resources
+!var/langs
+!var/conf
+var/langs/*
+!var/langs/en
+!var/.htaccess
+!var/index.php
+!var/builds
+!images/promo
+
+upgrades/*
+!upgrades/source_restore.php
+
+local_conf.php
+install/
+sph*.php
+get_addon.php
+get_addon/
+
+error_log*
+
+_tools/selenium_WebDriver/tests/share/config/sessions.local.php
+_tools/selenium_WebDriver/tests/share/storage/local.php
+_tools/selenium_WebDriver/tests/share/storage/screens/*.png
+
+_tools/migration/composer.lock
+_tools/migration/conf.php
+_tools/migration/vendor
+
+*.log
+*.sql
+*.bak
+*.swp
+*.orig
+*.tmp
+
+# End of https://www.toptal.com/developers/gitignore/api/c,c++,cs-cart
