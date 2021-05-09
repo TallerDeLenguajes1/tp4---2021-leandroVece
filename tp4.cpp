@@ -23,12 +23,17 @@ void insertarNodo(Tnodo**lista, Tnodo *nodo);
 void mostrar(Tnodo *lista);
 Tnodo * QuitarNodo(Tnodo ** Lista);
 bool ControlDeTarea(Tnodo * tarea);
+Tnodo * busquedaPorId(Tnodo **lista, int cantidad);
+	Tnodo *busquedaNombre(Tnodo **lista, int cantidad);
+
+
 
 int main(){
 	
 	time_t t;
     srand((unsigned) time(&t));
     int cantidad = rand() % 4 +1;
+    int id;
     
     printf("Ingrese la cantidad de tareas");    
     printf("\nLa cantidad ingresada es %d", cantidad);
@@ -36,11 +41,21 @@ int main(){
     Tnodo * start;
     start = listaVacia();
 	Tnodo * TareasRealizadas = listaVacia();
-	Tnodo * TareasPendientes = listaVacia(); 
+	Tnodo * TareasPendientes = listaVacia();
+	Tnodo * busqueda = listaVacia();
 //	mostrar(start); 
     
 	CargarListadeTareas(&start, cantidad);
 	
+	printf("Busqueda de tarea por Id: \n");
+	busqueda = busquedaPorId(&start, cantidad);
+    mostrar(busqueda); 
+	
+	printf("Busqueda de tarea por nombre: \n");
+	busqueda = busquedaNombre(&start, cantidad);
+    mostrar(busqueda);	
+	
+		
 	for (int i = 0; i < cantidad; i++)
     {
     	Tnodo * nodoAux = QuitarNodo(&start);
@@ -54,13 +69,14 @@ int main(){
 		}
 		    
     }
-	
+
 	printf("\n##############Tareas realizadas#################");
 	mostrar(TareasRealizadas);	
 	
 	printf("\n##############Tareas pendientes#################");
 	mostrar(TareasPendientes);	
 	
+	//mostrar(start); 
 	
 	return 0;
 }
@@ -154,3 +170,51 @@ bool ControlDeTarea(Tnodo * tarea){
 	}
 	
 }
+
+
+Tnodo * busquedaPorId(Tnodo **lista, int cantidad){ 
+	
+	Tnodo *aux = *lista;
+	int id;
+
+    printf("Ingrese el ID de la tarea a buscar: ");
+    scanf(" %d", &id);
+
+    while ( aux->sig && aux->tarea.TareaID != id){
+		aux =  aux->sig;
+	}
+
+	if (aux == NULL){
+		printf("su tarea no existe");
+		return NULL;
+		 	
+	}
+	else{
+		aux->sig = NULL;
+		return aux;	
+	}
+	
+}
+
+
+Tnodo *busquedaNombre(Tnodo **lista, int cantidad){
+	Tnodo *aux = *lista;
+	char nombre[100];
+	gets(nombre);
+	
+	while ( aux->sig && strcmp(aux->tarea.Descripcion,nombre) != 0){
+		aux = aux->sig;
+	}
+	if (aux != NULL){
+		aux->sig = NULL;
+		return aux;		
+	}
+	else{
+		printf("su tarea no existe");
+		return NULL;
+	}
+
+}
+
+
+
