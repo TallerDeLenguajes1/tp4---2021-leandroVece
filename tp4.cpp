@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct Tarea{
 	int TareaID; //Numerado en ciclo iterativo
@@ -14,11 +15,14 @@ typedef struct Tnodo{
 	Tnodo *sig;
 }Tnodo;
 
-void cargarTarea(Tnodo **lista, Tnodo** start, int cant);
+void CargarListadeTareas(Tnodo **lista, int cant);
 Tnodo * listaVacia();
-Tnodo ** cargarNodo(Tnodo** tarea, int i);
-void insertarNodo(Tnodo**lista, Tnodo **start);
-void mostrar(Tnodo **lista);
+Tnodo * CrearNodo();
+void CargarNodoConTarea(Tnodo * tarea, int i);
+void insertarNodo(Tnodo**lista, Tnodo *nodo);
+void mostrar(Tnodo *lista);
+Tnodo * QuitarNodo(Tnodo ** Lista);
+bool ControlDeTarea(Tnodo * tarea);
 
 int main(){
 	
@@ -30,12 +34,33 @@ int main(){
     printf("\nLa cantidad ingresada es %d", cantidad);
     
     Tnodo * start;
-    start = listaVacia();   
+    start = listaVacia();
+	Tnodo * TareasRealizadas = listaVacia();
+	Tnodo * TareasPendientes = listaVacia(); 
 //	mostrar(start); 
     
-	Tnodo * tarea;
-	cargarTarea(&tarea , &start, cantidad);
-	mostrar(&tarea);	
+	CargarListadeTareas(&start, cantidad);
+	
+	for (int i = 0; i < cantidad; i++)
+    {
+    	Tnodo * nodoAux = QuitarNodo(&start);
+    	printf("\nDesea realizar la tarea(S/N): ");
+    	mostrar(nodoAux);	
+        if( ControlDeTarea(start) ){
+        	insertarNodo(&TareasRealizadas, nodoAux);
+        	
+		}else{
+        	insertarNodo(&TareasPendientes, nodoAux);
+		}
+		    
+    }
+	
+	printf("\n##############Tareas realizadas#################");
+	mostrar(TareasRealizadas);	
+	
+	printf("\n##############Tareas pendientes#################");
+	mostrar(TareasPendientes);	
+	
 	
 	return 0;
 }
@@ -46,66 +71,86 @@ Tnodo * listaVacia(){
 
 
 
-void cargarTarea(Tnodo ** lista, Tnodo ** start, int cant){
+void CargarListadeTareas(Tnodo ** lista, int cant){
 	
 	int i;
-	//printf("\n%d",cant);
-	
+
 	for(i=0; i < cant;i++){
 		
-		lista = (Tnodo**)malloc(sizeof(Tnodo*));
-		lista = cargarNodo(lista,i);
+		Tnodo * nuevoNodo = CrearNodo();
 		
-		insertarNodo(lista, start);
-		//printf("\n%d",cant);
+		CargarNodoConTarea(nuevoNodo,i);
+		
+		insertarNodo(lista, nuevoNodo);
 	}
 	
 }
 
 // funciona bien
-Tnodo ** cargarNodo(Tnodo** tarea, int i){
+void CargarNodoConTarea(Tnodo *tarea, int i){
 	
 	char aux[100];
 
 	
-	(*tarea)->tarea.TareaID = i +1;
+	tarea->tarea.TareaID = i +1;
 	printf("\ningrese el nombre de la tarea que debe realizar: ");
 	gets(aux);
 	
-	(*tarea)->tarea.Descripcion = (char*)malloc(sizeof(strlen(aux)));
+	tarea->tarea.Descripcion = (char*)malloc(strlen(aux));
 	
-	strcpy((*tarea)->tarea.Descripcion,aux);
+	strcpy(tarea->tarea.Descripcion,aux);
 	
-	(*tarea)->tarea.Duracion = rand() % 100 + 10;
+	tarea->tarea.Duracion = rand() % 100 + 10;
 	
-	return tarea;
 
+}
+
+Tnodo * CrearNodo(){
+	
+	return (Tnodo*)malloc(sizeof(Tnodo));
+	
 }
 
 
 //problema
-void insertarNodo(Tnodo ** lista, Tnodo **start){
+void insertarNodo(Tnodo ** lista, Tnodo *nodo){
 	
-	(*lista)->sig = *start;
-	start = lista;
+	//Tnodo *aux = *lista;	
+	nodo->sig = *lista;
+	*lista = nodo;
 		
-	/*Tnodo *L= *lista;
-	Tnodo *S = *start;
-	//printf("adasdsad");
-	L->sig = S;
-	S = L;*/
+}
+
+Tnodo * QuitarNodo(Tnodo ** Lista){
+	
+	Tnodo *aux = *Lista;
+	
+	*Lista = (*Lista)->sig;
+	aux->sig = NULL;
+	return aux;
 }
 
 
 
-void mostrar(Tnodo **lista){
-	Tnodo *t = *lista;
+void mostrar(Tnodo *lista){ 
 	
-	while(t !=NULL){
-		printf("\nID: %d",t->tarea.TareaID);
-    	printf("\nDescripcion: %s",t->tarea.Descripcion);
-    	printf("\nDuracion: %d\n",t->tarea.Duracion);
-    	t = t->sig;
+	while(lista !=NULL){
+		printf("\nID: %d",lista->tarea.TareaID);
+    	printf("\nDescripcion: %s",lista->tarea.Descripcion);
+    	printf("\nDuracion: %d\n",lista->tarea.Duracion);
+    	lista = lista->sig;
 	}
 
+}
+
+bool ControlDeTarea(Tnodo * tarea){
+	
+	char aux;
+	scanf(" %c",&aux);
+	if(tolower(aux) == 's'){
+		return true;
+	}else{
+		return false;
+	}
+	
 }
